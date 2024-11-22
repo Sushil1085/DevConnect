@@ -10,20 +10,26 @@ const userSchema=mongoose.Schema({
     },
     emailId:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
     password:{
         type:String,
         required:true
     },
     age:{
-        type:Number
+        type:Number,
+        min:18
     },
     gender:{
         type:String
     }
-});
+},
+{
+    timestamps:true
+}
+);
 
 const User=mongoose.model("user",userSchema);
 
-module.exports={User};
+module.exports = User;
