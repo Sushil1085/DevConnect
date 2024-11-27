@@ -73,4 +73,13 @@ authRouter.post("/logout",async(req,res)=>{
     })
     res.send("Logout Successfully");
 })
+
+authRouter.get("/getAllUsers",async(req,res)=>{
+    try{
+        const users=await User.find({});
+        res.send(users);
+    }catch(err){
+        res.status(400).send("Error While fetching data"+err);
+    }
+})
 module.exports=authRouter;
