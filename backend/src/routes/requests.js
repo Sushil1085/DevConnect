@@ -4,7 +4,7 @@ const requestRouter=express.Router();
 const ConnectionRequest=require("../models/connectionRequest");
 const User=require("../models/user");
 
-//for sending request or  ignoring
+//for sending request or  ignoring API
 requestRouter.post("/request/send/:status/:toUserId",adminAuth,async(req,res)=>{
     try{
         const fromUserId=req.user._id; //this id gives from who is login from there he can taek that id
@@ -52,7 +52,7 @@ requestRouter.post("/request/send/:status/:toUserId",adminAuth,async(req,res)=>{
 });
 
 
-//for acepting or rejecting
+//for acepting or rejecting API
 requestRouter.post("/request/review/:status/:requestId",adminAuth,async(req,res)=>{
     try{
         const loggedInUser=req.user._id;
