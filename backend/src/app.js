@@ -10,6 +10,7 @@ const cors=require("cors");
 const authRouter=require("./routes/auth");
 const profileRouter=require("./routes/profile");
 const requestsRouter=require("./routes/requests");
+const requestUser = require("./routes/user");
 
 const app=express();
 
@@ -20,6 +21,7 @@ app.use(cors());
 app.use("/",authRouter); // The code come will here and check in this router if there then after res.send it will not go further,if not there goes in second router
 app.use("/",profileRouter);
 app.use("/",requestsRouter);
+app.use("/",requestUser);
 
 connectDB().then(()=>{
     app.listen(7000,()=>{

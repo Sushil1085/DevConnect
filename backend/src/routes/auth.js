@@ -3,6 +3,7 @@ const User=require("../models/user");
 const bcrypt=require("bcrypt");
 const jwt=require("jsonwebtoken");
 const {validationSignup}=require("../utils/validation");
+const {adminAuth}=require("../middlewares/auth");
 
 const authRouter=express.Router();
 
@@ -15,8 +16,6 @@ authRouter.post("/signup", async (req, res) => {    //apn User ha Model gheun "/
 
     const passHash=await bcrypt.hash(password,10);
     // console.log(passHash);
-    
-
     const user = new User({
         firstName,
         lastName,
@@ -31,6 +30,23 @@ authRouter.post("/signup", async (req, res) => {    //apn User ha Model gheun "/
         res.status(400).send("Error while saving data: " + err.message);
     }
 });
+
+// authRouter.put("/editProfile",adminAuth ,async(req,res)=>{
+//     try{
+//         const id=req.user._id;
+//         const updatedData=req.body;
+
+//         const user=await User.findByIdAndUpdate(id,updatedData);
+
+//         await user.save();
+//         return res.status(200).json({
+//             message: "Profile Updated Successfully",
+//             data: user,
+//           });
+//     }catch(err){
+//         res.status(400).send("Error While fetching data"+err);
+//     }
+// })
 
 authRouter.post("/login",async(req,res)=>{
     try{
