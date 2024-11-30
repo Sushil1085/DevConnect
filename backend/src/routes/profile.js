@@ -1,6 +1,7 @@
 const express = require("express");
 const { adminAuth } = require("../middlewares/auth");
 const { validateEditProfileData } = require("../utils/validation");
+const User = require("../models/user");
 const profileRouter = express.Router();
 
 //This API for View Who is logged in(which user is this profile) 
@@ -43,4 +44,16 @@ profileRouter.patch("/profile/edit", adminAuth, async (req, res) => {
     }
 })
 
+profileRouter.delete("/profile/delete", adminAuth, async (req, res) => {
+    try{
+        const loggedInUser=req.user;
+        const data=await User.findByIdAndDelete(loggedInUser._id);
+        res.json({
+            message:`${loggedInUser.firstName} Your profile deleted successfully`,
+            data
+        })
+    }catch(err){
+        res.status(400).send("Error " + err.message);
+    }
+})
 module.exports = profileRouter;

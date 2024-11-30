@@ -13,7 +13,7 @@ authRouter.post("/signup", async (req, res) => {    //apn User ha Model gheun "/
     try { 
     validationSignup(req);
 
-    const {password,firstName,lastName,emailId}=req.body;
+    const {password,firstName,lastName,emailId,age,gender,photoURL,skills,about}=req.body;
 
     const passHash=await bcrypt.hash(password,10);
     // console.log(passHash);
@@ -21,11 +21,20 @@ authRouter.post("/signup", async (req, res) => {    //apn User ha Model gheun "/
         firstName,
         lastName,
         emailId,
-        password:passHash
+        password:passHash,
+        age,
+        gender,
+        photoURL,
+        skills, 
+        about
     });
         await user.save();
         
-        res.status(201).send(user); // Respond with the newly created user object
+        res.json({
+            message:`${firstName} Created Successfully`,
+            data:user
+        })
+        
     } catch (err) {
         // Handle general errors during the process
         res.status(400).send("Error while saving data: " + err.message);

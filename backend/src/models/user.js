@@ -19,10 +19,24 @@ const userSchema=mongoose.Schema({
     },
     age:{
         type:Number,
-        min:18
+        min:18,
+        required:true
     },
     gender:{
-        type:String
+        type:String,
+        required:true
+    },
+    photoURL:{
+        type:String,
+        required:true
+    },
+    skills:[{
+        type:String,
+        required:true
+    }],
+    about:{
+        type:String,
+        required:true
     }
 },
 {
