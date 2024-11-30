@@ -3,6 +3,8 @@ const { adminAuth } = require("../middlewares/auth");
 const { validateEditProfileData } = require("../utils/validation");
 const profileRouter = express.Router();
 
+//This API for View Who is logged in(which user is this profile) 
+
 profileRouter.get("/profile/view", adminAuth, async (req, res) => {
     try {
         const user = req.user;
@@ -15,6 +17,8 @@ profileRouter.get("/profile/view", adminAuth, async (req, res) => {
         res.status(400).send("Error " + err.message);
     }
 })
+
+//THis API for Edit Profile of whos logged in
 
 profileRouter.patch("/profile/edit", adminAuth, async (req, res) => {
     try {

@@ -7,6 +7,7 @@ const {adminAuth}=require("../middlewares/auth");
 
 const authRouter=express.Router();
 
+//This API for creating new User
 authRouter.post("/signup", async (req, res) => {    //apn User ha Model gheun "/signup" hy route vr tyache operations kraloy
 
     try { 
@@ -48,6 +49,7 @@ authRouter.post("/signup", async (req, res) => {    //apn User ha Model gheun "/
 //     }
 // })
 
+//this API forn login a user
 authRouter.post("/login",async(req,res)=>{
     try{
         const {emailId,password}=req.body;
@@ -82,6 +84,7 @@ authRouter.post("/login",async(req,res)=>{
     }
 });
 
+//This API for logout
 
 authRouter.post("/logout",async(req,res)=>{
     res.cookie("token",null,{
