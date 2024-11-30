@@ -1,92 +1,127 @@
-import './App.css'
-import { useQuery, useMutation,useQueryClient } from '@tanstack/react-query'
-import { fetchUsers, addUser,editUserAPI } from './api/api'
 import React from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Login } from './pages/login';
 
 function App() {
 
-  const queryClient = useQueryClient();
-  // Query for fetching users
-  const { data, error, isLoading } = useQuery({
-    queryKey: ['users'],
-    queryFn: fetchUsers
-  });
-
-  // Mutation for adding a user
-  const { mutate, isError: isPostError, isLoading: isPosting, error: postError, reset } = useMutation({
-    mutationFn: addUser,
-    onSuccess: () => {
-      queryClient.invalidateQueries(['users']);
-      reset(); // Reset mutation state
-      // Optionally refetch users or use query cache to update user list
-    }
-  });
-
-  const {mutate:updateMutate,isError:updateIsError,isLoading:updateIsLoading,error:updateError,reset:updateReset}=useMutation({
-    mutationFn: editUserAPI,
-    onSuccess:()=>{
-      queryClient.invalidateQueries(['users']);
-      updateReset();
-    }
-  })
-  const [editUser, setEditUser] = React.useState(null);
-
- 
-
-  const handleUpdate = (user) => {
-    setEditUser(user);
-    updateMutate(user);
-  };
-
-  // Submit handler
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const user = {
-      firstName: formData.get('firstName'),
-      lastName: formData.get('lastName'),
-      emailId: formData.get('emailId'),
-      password: formData.get('password'),
-      age: formData.get('age'),
-      gender: formData.get('gender')
-    };
-    // if (!user.firstName || !user.lastName || !user.emailId || !user.password || !user.age || !user.gender) {
-    //   alert("All fields are mandatory");
-    //   return;
-    // }
-    mutate(user);
-    e.target.reset();
-  };
-  // console.log(firstName);
- 
-
   return (
     <>
-      <h1>Learn about React Query</h1>
+      <Router>  
+        <Routes>
+          <Route exact path="/" element={<Login />} />
+        </Routes>
+      </Router>
 
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Enter your name" className="input" name="firstName" defaultValue={editUser?.firstName || ''} />
-        <input type="text" placeholder="Enter your last name" className="input" name="lastName" defaultValue={editUser?.lastName || ''} />
-        <input type="email" placeholder="Enter your Email Id" className="input" name="emailId"defaultValue={editUser?.emailId || ''} />
-        <input type="password" placeholder="Enter your Password" className="input" name="password" />
-        <input type="number" placeholder="Enter your Age" className="input" name="age"defaultValue={editUser?.age || ''} />
-        <input type="text" placeholder="Enter your gender" className="input" name="gender"defaultValue={editUser?.gender || ''} />
-        <button type="submit" disabled={isPosting}>Submit</button>
-      </form>
 
-      {/* Display feedback messages */}
-      {isLoading && <p>Loading users...</p>}
-      {error && <p>Error fetching users: {error.message}</p>}
-      {isPostError && <p>Error adding user: {postError?.message}</p>}
 
-      {/* Render user list */}
-      {data && data.map((user) => (
-        <div key={user._id}>
-          <p>{user.firstName} {user.lastName}</p>
-          <button onClick={() => handleUpdate(user)}>Update</button>
-        </div>
-      ))}
-     
+
+
+
+
+
+
+
+
+      <div className='bg-gray'>
+        {/* <form
+          onSubmit={handleSubmit}
+          className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg border border-gray-200"
+        >
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+            User Information
+          </h2>
+
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Enter your first name"
+              className="input block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="firstName"
+              defaultValue={editUser?.firstName || ''}
+            />
+            <input
+              type="text"
+              placeholder="Enter your last name"
+              className="input block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="lastName"
+              defaultValue={editUser?.lastName || ''}
+            />
+            <input
+              type="email"
+              placeholder="Enter your email ID"
+              className="input block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="emailId"
+              defaultValue={editUser?.emailId || ''}
+            />
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="input block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="password"
+            />
+            <input
+              type="number"
+              placeholder="Enter your age"
+              className="input block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="age"
+              defaultValue={editUser?.age || ''}
+            />
+            <input
+              type="text"
+              placeholder="Enter your gender"
+              className="input block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="gender"
+              defaultValue={editUser?.gender || ''}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={isPosting}
+            className={`w-full mt-6 py-3 rounded-lg text-white font-semibold 
+      ${isPosting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:ring-blue-300'}`}
+          >
+            {isPosting ? 'Submitting...' : 'Submit'}
+          </button>
+        </form> */}
+
+        {/* <table className="min-w-full table-auto border-collapse border border-gray-200">
+          <thead>
+            <tr className="bg-gray-100 text-left">
+              <th className="px-4 py-2 border-b text-sm font-semibold text-gray-700">First Name</th>
+              <th className="px-4 py-2 border-b text-sm font-semibold text-gray-700">Last Name</th>
+              <th className="px-4 py-2 border-b text-sm font-semibold text-gray-700">Email</th>
+              <th className="px-4 py-2 border-b text-sm font-semibold text-gray-700">Age</th>
+              <th className="px-4 py-2 border-b text-sm font-semibold text-gray-700">Gender</th>
+              <th className="px-4 py-2 border-b text-sm font-semibold text-gray-700">Actions</th>
+              <th className="px-4 py-2 border-b text-sm font-semibold text-gray-700">Photo</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users && users.map((user) => (
+              <tr key={user._id} className="border-b hover:bg-gray-50">
+                <td className="px-4 py-2 text-sm text-gray-800">{user.firstName}</td>
+                <td className="px-4 py-2 text-sm text-gray-800">{user.lastName}</td>
+                <td className="px-4 py-2 text-sm text-gray-800">{user.emailId}</td>
+                <td className="px-4 py-2 text-sm text-gray-800">{user.age}</td>
+                <td className="px-4 py-2 text-sm text-gray-800">{user.gender}</td>
+                <td className="px-4 py-2 text-sm text-gray-800">
+                  <button className="text-blue-500 hover:text-blue-700">Edit</button>
+                  <button className="ml-2 text-red-500 hover:text-red-700">Delete</button>
+                </td>
+                <td className="px-4 py-2">
+                  <img
+                    src={user.photoURL}
+                    alt={user.firstName}
+                    className="w-16 h-16 object-cover rounded-full border border-gray-300"
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table> */}
+      </div>
+
     </>
   );
 }
