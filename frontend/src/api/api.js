@@ -1,8 +1,16 @@
-const fetchUsers =async()=>{
-    const response =await fetch('http://localhost:7000/getAllUsers');
+import axios from "axios";
+import { data } from "react-router-dom";
 
-    const usersData=await response.json();
-    return usersData;
+const login =async(data)=>{
+console.log(data,"from api file");
+
+  try {
+    const response = await axios.post("http://localhost:7000/login", data);
+    return response;
+  } catch (error) {
+    console.error("Login API Error:");
+    throw new Error("Failed to log in.");
+  }
 }
 
 const addUser =async(userData)=>{
@@ -25,4 +33,4 @@ const editUserAPI =async(updatedUser)=>{
     })
 }
 
-export {fetchUsers,addUser,editUserAPI};
+export {login,addUser,editUserAPI};

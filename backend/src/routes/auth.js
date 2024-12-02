@@ -65,7 +65,7 @@ authRouter.post("/login",async(req,res)=>{
 
         const user=await User.findOne({emailId});
         if(!user){
-            res.status(404).send("User Not Found");
+            return res.status(404).send("User Not Found");
         }
         const isPasswordMatch=await bcrypt.compare(password,user.password); //first password is what we put on frontend or body in postman second is from DB it compare both and give us result
         
@@ -75,13 +75,13 @@ authRouter.post("/login",async(req,res)=>{
             const token=await jwt.sign({_id:user._id},"DEVTINDER@123",{ // here we can create token here and pass user id nad one secret key
                 expiresIn:"1d"
             }); //hide the user id inside token and second one is secrete key third is for expires in 1 day 
-            console.log(token);
-            console.log(JSON.stringify(req.cookies) + " cookies");
+            // console.log(token);
+            // console.log(JSON.stringify(req.cookies) + " cookies");
             
             res.cookie("token",token,{
                 expires:new Date(Date.now() + 8*3600000),
             });
-            res.send("Login Successfully");
+            return res.json(user);
         }
         else{
            return res.send("Incorrect Password");
