@@ -12,10 +12,13 @@ profileRouter.get("/profile/view", adminAuth, async (req, res) => {
         if (!user) {
             res.status(404).send("User Not Found");
         }
-        res.send(user);
+        return res.json({
+            message: "Profile Fetched Successfully",
+            data: user
+        });
 
     } catch (err) {
-        res.status(400).send("Error " + err.message);
+       return  res.status(400).send("Error " + err.message);
     }
 })
 

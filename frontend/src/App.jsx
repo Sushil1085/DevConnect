@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Login } from './pages/login';
+import Profile  from './pages/Profile';
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
       <Router>  
         <Routes>
           <Route exact path="/" element={<Login />} />
+          <Route path='/profile' element={<Profile />} />
         </Routes>
       </Router>
 
