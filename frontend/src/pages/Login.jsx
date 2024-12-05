@@ -16,7 +16,7 @@ export const Login = () => {
     onSuccess: (data) => {
       console.log("Login Success", data);
       setIsLoggedIn(true);
-      navigate("/profile");
+      navigate("/profile/view");
     },
     onError: (err) => {
       console.error("Login failed:", err);

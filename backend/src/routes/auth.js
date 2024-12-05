@@ -75,21 +75,11 @@ authRouter.post("/login",async(req,res)=>{
             const token=await jwt.sign({_id:user._id},"DEVTINDER@123",{ // here we can create token here and pass user id nad one secret key
                 expiresIn:"1d"
             }); //hide the user id inside token and second one is secrete key third is for expires in 1 day 
-            // console.log(token);
-            // console.log(JSON.stringify(req.cookies) + " cookies");
-            
-            // res.cookie("token",token,{
-            //     expires:new Date(Date.now() + 8*3600000),
-            // });
 
-            res.cookie("token", token, {
-                httpOnly: true, // Ensures the cookie isn't accessible via client-side JavaScript
-                secure: process.env.NODE_ENV === "DEVTINDER@123", // Use secure cookies in production
-                sameSite: "strict", // Protects against CSRF attacks
-                expires: new Date(Date.now() + 8 * 3600000), // 8 hours expiration
-              });
 
-            return res.json(user);
+            res.cookie("token", token);
+
+            res.send(user);
         }
         else{
            return res.send("Incorrect Password");

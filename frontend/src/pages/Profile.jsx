@@ -12,7 +12,7 @@ const Profile = () => {
         queryFn: viewProfileAPI,
       })
     
-    console.log(data,"demdnjk");
+    console.log(data,"Profile data");
 
 
 

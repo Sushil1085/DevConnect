@@ -2,7 +2,7 @@ const jwt=require("jsonwebtoken");
 const User=require("../models/user");
 
 const adminAuth= async (req,res,next)=>{
-    try{
+    try{      
         const {token}=req.cookies;
         if(!token){
             return res.status(401).send("Authentication token not found.");

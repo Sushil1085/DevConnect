@@ -1,8 +1,8 @@
 import axios from "axios";
-import { data } from "react-router-dom";
+axios.defaults.withCredentials = true; //this is most imp because of that my cookie will be sent to backend
 
 const login =async(data)=>{
-console.log(data,"from api file");
+// console.log(data,"from api file");
 
   try {
     const response = await axios.post("http://localhost:7000/login", data);
@@ -16,9 +16,7 @@ console.log(data,"from api file");
 const viewProfileAPI =async()=>{
   try{
 
-    const response =await axios.get("http://localhost:7000/profile/view",{
-      withCredentials: true, // Include cookies in the request
-    });
+    const response =await axios.get("http://localhost:7000/profile/view");
     console.log(response.data,"from api file");
     return response.data;
    

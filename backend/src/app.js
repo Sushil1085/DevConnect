@@ -16,7 +16,10 @@ const app=express();
 
 app.use(express.json());   
 app.use(cookieParser()); 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    credentials: true 
+}));
 
 app.use("/",authRouter); // The code come will here and check in this router if there then after res.send it will not go further,if not there goes in second router
 app.use("/",profileRouter);

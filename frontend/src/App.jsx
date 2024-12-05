@@ -10,7 +10,7 @@ function App() {
       <Router>  
         <Routes>
           <Route exact path="/" element={<Login />} />
-          <Route path='/profile' element={<Profile />} />
+          <Route path='/profile/view' element={<Profile />} />
         </Routes>
       </Router>
 
