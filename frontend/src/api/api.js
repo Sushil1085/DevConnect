@@ -17,8 +17,8 @@ const viewProfileAPI =async()=>{
   try{
 
     const response =await axios.get("http://localhost:7000/profile/view");
-    console.log(response.data,"from api file");
-    return response.data;
+    // console.log(response.data,"from api file");
+    return response.data.data;
    
     
   }catch(err){
@@ -27,14 +27,27 @@ const viewProfileAPI =async()=>{
   }
 }
 
-const editUserAPI =async(updatedUser)=>{
-    const response =await fetch(`http://localhost:7000/profile/edit`,updatedUser,{
-        method:'PATCH',
-        headers:{
-            'Content-Type':'application/json'
-        },
-        body:JSON.stringify(userData)
-    })
+const logoutAPI =async()=>{
+  try{
+    const response =await axios.post("http://localhost:7000/logout");
+    console.log(response,"from api file");
+    return response;
+   
+    
+  }catch(err){
+    console.error("Login API Error:");
+    throw new Error("Failed to log in.");
+  }
 }
 
-export {login,viewProfileAPI,editUserAPI};
+const signup =async(data)=>{
+  try {
+    const response = await axios.post("http://localhost:7000/signup", data);
+    return response;
+  } catch (error) {
+    console.error("Signup API Error:");
+    throw new Error("Failed to sign up.");
+  }
+}
+
+export {login,viewProfileAPI,logoutAPI};

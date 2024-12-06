@@ -93,7 +93,7 @@ export const Login = () => {
                       id="remember"
                       type="checkbox"
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600"
-                      required
+                   
                     />
                   </div>
                   <div className="ml-3 text-sm">
@@ -121,7 +121,7 @@ export const Login = () => {
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
                 <a
-                  href="#"
+                  href="/signUp"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign up
