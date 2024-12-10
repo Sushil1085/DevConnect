@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Login } from './pages/Login'
 import Profile  from './pages/Profile';
 import SignUp  from './pages/SignUp';
+import ForgotPassword from './pages/forgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
 
@@ -10,9 +12,12 @@ function App() {
     <>
       <Router>  
         <Routes>
-          <Route exact path="/" element={<Login />} />
+          {/* <Route path="/login" element={<Login />} /> */}
+          <Route path="/" element={<Login />} />
           <Route path='/profile/view' element={<Profile />} />
           <Route path='/signUp' element={<SignUp />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/reset-password/:id/:token' element={<ResetPassword />} />
         </Routes>
       </Router>
 

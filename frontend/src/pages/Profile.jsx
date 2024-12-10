@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState} from "react";
 import { viewProfileAPI, logoutAPI } from "../api/api";
 import { useQuery, QueryClient, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,8 @@ const queryClient = new QueryClient()
 const Profile = () => {
 
     const navigate = useNavigate();
+
+    const [deletePopUp, setDeletePopUp] = useState(false);
 
 
     const { data, isLoading } = useQuery({
@@ -31,7 +33,8 @@ const Profile = () => {
 
 
     const handleLogout = () => {
-        mutate();
+        setDeletePopUp(true);
+        // mutate();
     }
 
     return (<>
@@ -55,6 +58,28 @@ const Profile = () => {
             </div>
 
         ) : (<h1>Please Login</h1>)}
+
+        {deletePopUp && (
+            <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                <div className="bg-white p-4 rounded-lg">
+                    <h2 className="text-lg font-semibold mb-2">Are you sure you want to logout?</h2>
+                    <div className="flex justify-end">
+                        <button
+                            onClick={() => setDeletePopUp(false)}
+                            className="px-4 py-2 bg-gray-400 text-white rounded-lg mr-2"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={() => mutate()}
+                            className="px-4 py-2 bg-red-500 text-white rounded-lg"
+                        >
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
     </>
 
     )

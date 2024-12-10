@@ -1,6 +1,12 @@
 import React from 'react'
 import { useState } from 'react';
+import {useMutation} from "@tanstack/react-query";
+import { useNavigate } from 'react-router-dom';
+import { signup } from '../api/api';
+
 const SignUp = () => {
+
+  const navigate=useNavigate();
 
     const [data,setData]=useState({
         firstName: "",
@@ -13,14 +19,32 @@ const SignUp = () => {
         skills: [],
         about :""
     });
-
-console.log(data);
 const handleChange = (e) => {
-    setData({
-      ...data,       // Spread the old data
-      [e.target.name]: e.target.value // Dynamically update the property
-    });
-  };
+  const { name, value } = e.target;
+
+  setData({
+    ...data,
+    [name]: name === "skills" ? value.split(',').map(skill => skill.trim()) : value,
+  });
+};
+
+const {mutate,isLoading}=useMutation({
+    mutationFn:signup,
+    onSuccess:(data)=>{
+      navigate("/login");
+    },
+    onError:(err)=>{
+        console.error(err);
+    }
+})
+
+
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  mutate(data); 
+  // console.log(data);
+}
 
 
     return (
@@ -28,7 +52,7 @@ const handleChange = (e) => {
         <div class="min-h-screen flex flex-col items-center justify-center p-6">
           <div class="grid lg:grid-cols-2 items-center gap-6 max-w-7xl max-lg:max-w-xl w-full">
          
-            <form class="lg:max-w-md w-full">
+            <form class="lg:max-w-md w-full" onSubmit={handleSubmit}>
               <h3 class="text-gray-800 text-3xl font-extrabold mb-12">Create Profile</h3>
               <div class="space-y-6">
        
@@ -117,16 +141,15 @@ const handleChange = (e) => {
 
                 <div>
                   <label for="skills" class="text-gray-800 text-sm mb-2 block">skills</label>
-                  <input 
-                     onChange={handleChange}
-                     value={data.skills}
-                    id="skills" 
-                    name="skills" 
-                    type="text" 
-                    class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-4 focus:bg-transparent outline-blue-500 transition-all" 
-                    placeholder="Enter skills" 
-                    aria-label="Enter your name" 
-                  />
+                  <input
+          onChange={handleChange}
+          value={data.skills.join(', ')} // Convert the array back to a string
+          id="skills"
+          name="skills"
+          type="text"
+          className="bg-gray-100 w-full text-gray-800 text-sm px-4 py-4 focus:bg-transparent outline-blue-500 transition-all"
+          placeholder="Enter skills (e.g., JavaScript, React, CSS)"
+        />
                 </div>
 
                 <div>
@@ -183,6 +206,7 @@ const handleChange = (e) => {
        
               <p class="text-sm text-gray-800 mt-6">
                 Already have an account? 
+                {/* <a href="/login" class="text-blue-600 font-semibold hover:underline ml-1">Login here</a> */}
                 <a href="/" class="text-blue-600 font-semibold hover:underline ml-1">Login here</a>
               </p>
             </form>

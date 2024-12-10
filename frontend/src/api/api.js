@@ -50,4 +50,34 @@ const signup =async(data)=>{
   }
 }
 
-export {login,viewProfileAPI,logoutAPI};
+const forgotPasswordAPI =async(data)=>{
+  try {
+    const response = await axios.post("http://localhost:7000/forgot-password", data);
+    return response;
+  } catch (error) {
+    console.error("Signup API Error:");
+    throw new Error("Failed to sign up.");
+  }
+};
+
+const resetPasswordAPI =async(data)=>{
+  const { id, token, password } = data;
+  try {
+    console.log("data",id, token, password );
+  const res= await axios.post(`http://localhost:7000/api/reset-password/${id}/${token}`,{
+    password
+   
+  });
+   
+    console.log(res);
+    return res;
+    
+  } catch (error) {
+    console.error("Signup API Error:");
+    throw new Error("Failed to sign up.",error);
+  }
+};
+
+
+
+export {login,viewProfileAPI,logoutAPI,signup,forgotPasswordAPI,resetPasswordAPI};

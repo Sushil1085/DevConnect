@@ -4,6 +4,7 @@ const bcrypt=require("bcrypt");
 const jwt=require("jsonwebtoken");
 const {validationSignup}=require("../utils/validation");
 const {adminAuth}=require("../middlewares/auth");
+var nodemailer = require('nodemailer');
 
 const authRouter=express.Router();
 
@@ -99,6 +100,77 @@ authRouter.post("/logout",async(req,res)=>{
     })
     res.send("Logout Successfully");
 })
+
+authRouter.post("/forgot-password",async(req,res)=>{
+    try{
+        const {emailId}=req.body;
+
+        const user=await User.findOne({emailId});
+        if(!user){
+            return res.status(404).send("User Not Found");
+        }
+
+        const token=jwt.sign({_id:user._id},"DEVTINDER@123",{expiresIn:"1h"});
+
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'sushilp1085@gmail.com',
+              pass: 'ooxn tnrr qhcd rvcd'
+            }
+          });
+          
+          var mailOptions = {
+            from: 'sushilp1085@gmail.com',
+            to: emailId,
+            subject: 'Reset Your Password',
+            text: `http://localhost:5173/reset-password/${user._id}/${token}`
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+                console.error("Error sending email: ", error);
+                return res.status(500).send("Failed to send email.");
+            } else {
+                console.log('Email sent: ' + info.response);
+                return res.status(200).send("Email Sent Successfully");
+            }
+          });
+
+    }catch(err){
+        res.status(400).send("Error While fetching data"+err);
+    }
+});
+
+authRouter.post("/reset-password/:id/:token",async(req,res)=>{
+    try{
+        const {id,token}=req.params;
+        const {password}=req.body;
+
+        if(!id || !token){
+            return res.status(404).send("User ID or Token Not Found");
+        }
+        const decodedObj=jwt.verify(token,"DEVTINDER@123");
+        if(!decodedObj){
+            return res.status(400).send("Invalid Token");
+        }
+        const passHash=await bcrypt.hash(password,10);
+
+        User.findByIdAndUpdate(id,{password:passHash}).then((user)=>{
+            if(!user){
+                return res.status(404).send("User Not Found");
+            }
+            return res.status(200).send("Password Reset Successfully");
+        }).catch((err)=>{
+            return res.status(400).send("Error While fetching data"+err);
+        })
+
+    }catch(err){
+        res.status(400).send("Error While fetching data"+err);
+    }
+});
+
+
 
 authRouter.get("/getAllUsers",async(req,res)=>{
     try{
