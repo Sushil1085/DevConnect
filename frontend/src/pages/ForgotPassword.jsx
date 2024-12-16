@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { forgotPasswordAPI } from "../api/api";
+import { useNavigate } from "react-router-dom";
+
+
 
 
 const ForgotPassword = () => {
@@ -12,6 +15,7 @@ const [emailId, setEmailId] = useState("");
         mutationFn:forgotPasswordAPI,
         onSuccess:(data)=>{
             console.log(data);
+            
         },
         onError:(err)=>{
             console.error(err);

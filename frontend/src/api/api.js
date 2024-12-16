@@ -64,7 +64,7 @@ const resetPasswordAPI =async(data)=>{
   const { id, token, password } = data;
   try {
     console.log("data",id, token, password );
-  const res= await axios.post(`http://localhost:7000/api/reset-password/${id}/${token}`,{
+  const res= await axios.post(`http://localhost:7000/reset-password/${id}/${token}`,{
     password
    
   });

@@ -146,6 +146,9 @@ authRouter.post("/reset-password/:id/:token",async(req,res)=>{
     try{
         const {id,token}=req.params;
         const {password}=req.body;
+        
+        console.log(id,token,password);
+        
 
         if(!id || !token){
             return res.status(404).send("User ID or Token Not Found");

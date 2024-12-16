@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { resetPassword } from "../api/api";
+import { resetPasswordAPI } from "../api/api";
 import { useParams, useNavigate } from "react-router-dom";
 
 const ResetPassword = () => {
@@ -10,7 +10,7 @@ const ResetPassword = () => {
     const [password, setPassword] = useState("");
 
     const { mutate } = useMutation({
-        mutationFn: resetPassword,
+        mutationFn: resetPasswordAPI,
         onSuccess: () => {
             navigate("/");
             console.log("success");
@@ -23,9 +23,9 @@ const ResetPassword = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        mutate({ password, id, token });
-        console.log(password, id, token);
-        
+        const data = { password, id, token };
+        mutate(data);
+        console.log(password, id, token);  
     };
     return (
     <>
