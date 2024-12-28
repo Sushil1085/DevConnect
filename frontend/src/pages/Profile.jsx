@@ -41,7 +41,11 @@ const Profile = () => {
 
         {isLoading && <div>Loading...</div>}
         {data ? (
-            <div className="flex items-center justify-center min-h-screen bg-gray-200">
+            <div className="flex items-center justify-center min-h-screen " 
+            style={{backgroundImage: "url('/joanna-kosinska-7ACuHoezUYk-unsplash.jpg')",
+                backgroundSize: "cover",
+                backgroundPosition: 'center',
+            }}>
                 <div className="flex flex-col max-w-md p-6 dark:bg-gray-50 dark:text-gray-800">
                     <img src={data.photoURL} alt="" className="flex-shrink-0 object-cover h-64 rounded-sm sm:h-96 dark:bg-gray-500 aspect-square" />
                     <div>

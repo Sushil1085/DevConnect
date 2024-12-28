@@ -35,6 +35,32 @@ authRouter.post("/signup", async (req, res) => {    //apn User ha Model gheun "/
             message:`${firstName} Created Successfully`,
             data:user
         })
+
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'sushilp1085@gmail.com',
+              pass: 'ooxn tnrr qhcd rvcd'
+            }
+          });
+          
+          var mailOptions = {
+            from: 'sushilp1085@gmail.com',
+            to: emailId,
+            subject: 'Successfully Created Your Account',
+            text: `Hi ${firstName}, You have successfully created your account. Please click on the link below For Signin. http://localhost:5173/`
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+                console.error("Error sending email: ", error);
+                return res.status(500).send("Failed to send email.");
+            } else {
+                console.log('Email sent: ' + info.response);
+                return res.status(200).send("Email Sent Successfully");
+            }
+          });
+        
         
     } catch (err) {
         // Handle general errors during the process

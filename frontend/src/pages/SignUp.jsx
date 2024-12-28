@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {useMutation} from "@tanstack/react-query";
 import { useNavigate } from 'react-router-dom';
 import { signup } from '../api/api';
+import { Toaster, toast } from "react-hot-toast";
 
 const SignUp = () => {
 
@@ -21,7 +22,6 @@ const SignUp = () => {
     });
 const handleChange = (e) => {
   const { name, value } = e.target;
-
   setData({
     ...data,
     [name]: name === "skills" ? value.split(',').map(skill => skill.trim()) : value,
@@ -30,11 +30,16 @@ const handleChange = (e) => {
 
 const {mutate,isLoading}=useMutation({
     mutationFn:signup,
+    
     onSuccess:(data)=>{
-      navigate("/login");
+      toast.success("Your Profile is Created Succefull...")
+      setTimeout(()=>{
+        navigate("/")
+      },2000)
     },
     onError:(err)=>{
         console.error(err);
+        toast.error("Signup failed");
     }
 })
 
@@ -42,12 +47,29 @@ const {mutate,isLoading}=useMutation({
 
 const handleSubmit = (e) => {
   e.preventDefault();
+  if(data.firstName==="" || data.lastName==="" || data.emailId==="" || data.password==="" || data.age==="" || data.gender===""){
+    return toast.error("All fields are mandatory");
+    }
+    const emailVal=/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+    if(!emailVal.test(data.emailId)){
+      return toast.error("Email is not valid");
+    }
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(data.password)) {
+      return toast.error("Password is not strong enough");
+    }
+    if(data.age<18){
+      return toast.error("Age should be greater than 18");
+    }
   mutate(data); 
   // console.log(data);
 }
 
 
     return (
+      <>
+      <Toaster />
         <div class="font-[sans-serif]">
         <div class="min-h-screen flex flex-col items-center justify-center p-6">
           <div class="grid lg:grid-cols-2 items-center gap-6 max-w-7xl max-lg:max-w-xl w-full">
@@ -220,7 +242,7 @@ const handleSubmit = (e) => {
           </div>
         </div>
       </div>
-      
+      </>
     )
 }
 export default SignUp;

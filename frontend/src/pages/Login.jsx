@@ -1,25 +1,28 @@
 import React, { useState } from "react";
 import { login } from "../api/api";
 import { useMutation } from "@tanstack/react-query";
-import { redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Toaster, toast } from "react-hot-toast";
+
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn,setIsLoggedIn ] = useState(false);
-
   const navigate = useNavigate();
 
   const { mutate,isLoading } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
       console.log("Login Success", data);
-      setIsLoggedIn(true);
-      navigate("/profile/view");
+      toast.success("Login Succefully...");
+      setTimeout(()=>{
+        navigate("/profile/view");
+      },2000)
     },
     onError: (err) => {
       console.error("Login failed:", err);
+      toast.error("Login failed");
+
     },
   });
 
@@ -31,6 +34,7 @@ export const Login = () => {
 
   return (
     <>
+        <Toaster />
     <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8">
       <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto">
         <div className="w-full bg-white rounded-lg shadow dark:border dark:border-gray-700 dark:bg-gray-800">
