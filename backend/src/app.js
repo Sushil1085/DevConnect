@@ -21,7 +21,7 @@ app.use(cors({
     credentials: true 
 }));
 
-app.use("/",authRouter); // The code come will here and check in this router if there then after res.send it will not go further,if not there goes in second router
+app.use("/",authRouter); // The code will come here and check in this router if there then after res.send it will not go further,if not there goes in second router
 app.use("/",profileRouter);
 app.use("/",requestsRouter);
 app.use("/",requestUser);
