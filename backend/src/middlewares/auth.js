@@ -6,7 +6,7 @@ const adminAuth= async (req,res,next)=>{
     try{      
         const {token}=req.cookies;
         if(!token){
-            return res.status(401).send("Authentication token not found.");
+            return res.status(401).send("Authentication token not found.Please login Again.");
         }
 
     const decodedObj=await jwt.verify(token,"DEVTINDER@123"); //before we can pass id while creating token now we can access id from token
