@@ -1,6 +1,8 @@
+import EditProfile from "./EditProfile";
+
 const Profile=()=>{
     return(
-    <h1>Profile</h1>
+    <EditProfile />
 )
 }
 export default Profile;
