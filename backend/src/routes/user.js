@@ -29,16 +29,18 @@ userRouter.get("/user/connections",adminAuth, async(req,res)=>{
         const connectionRequest=await Connectionrequests.find({
             $or:[{fromUserId:loggedInUser,status:"accepted"},
                 {toUserId:loggedInUser,status:"accepted"}] //we here give condition like my login id===that id who has same id with it and status is accepted in database
-        }).populate("fromUserId",["firstName","lastName"]).populate("toUserId",["firstName","lastName"]);
+        }).populate("fromUserId",["firstName","lastName","photoURL","about","skills","age","gender","emailId"]).populate("toUserId",["firstName","lastName","photoURL","about","skills","age","gender","emailId"]);
 
         // console.log(connectionRequest);
         
 
         const data=connectionRequest.map((request)=>{
-            if(request.fromUserId.toString()===loggedInUser.toString()){
+            if(request.fromUserId._id.toString()===loggedInUser.toString()){
                 return request.toUserId
             }
-            else{return request.fromUserId}
+            else{
+                return request.fromUserId
+            }
         })
         res.json({
             msg:"Connection Requests",

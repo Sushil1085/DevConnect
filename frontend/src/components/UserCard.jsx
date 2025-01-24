@@ -1,7 +1,7 @@
 import { use } from "react";
 
 const UserCard=({user})=>{
-    console.log(user,"from card");
+    // console.log(user,"from card");
     
     return(
     <>
