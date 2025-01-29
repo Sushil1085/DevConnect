@@ -2,18 +2,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { addRequest } from "../utils/requestSlice";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Requests=()=>{
+    const [pageLoad,setPageLoad]=useState(false);
     const dispatch=useDispatch();
     const requests=useSelector((state)=>state.requests);
+
+    const rewiewRequest=async(status,_id)=>{
+        try{
+            const res=await axios.post(BASE_URL+"/request/review/"+ status +"/"+ _id,{},{
+                withCredentials:true
+            });
+            setPageLoad(!pageLoad);
+           
+        }catch(err){
+            console.error(err);
+        }
+    }
 
     const fetchRequests=async()=>{
         try{
             const res=await axios.get(BASE_URL+"/user/requests/received",{
                 withCredentials:true
             });
-            console.log(res.data.data);
+            // console.log(res.data.data);
             dispatch(addRequest(res.data.data))
         }catch(err){
             console.error(err);
@@ -22,7 +35,7 @@ const Requests=()=>{
 
     useEffect(()=>{
         fetchRequests();
-    },[])
+    },[pageLoad]);
 
     if (!requests || requests.length === 0) {
         return (
@@ -48,8 +61,12 @@ const Requests=()=>{
                                 <p>{about}</p>
                                 </div>
                                 <div>
-                                <button className="btn btn-primary mx-4">Accept</button>
-                                <button className="btn btn-primary">Reject</button>
+                                <button className="btn btn-primary mx-4"
+                                    onClick={()=>rewiewRequest("accepted",request._id)}
+                                >Accept</button>
+                                <button 
+                                onClick={()=>rewiewRequest("rejected",request._id)} 
+                                className="btn btn-primary">Reject</button>
                                 </div>
                             </div>
                         )
